@@ -93,7 +93,8 @@ def send_wishes(user_id):
 def send_dossier(user_id):
     vk.messages.send(
         user_id=event.user_id,
-        message='Вы открыли папку с досье. Введите имя или прозвище персонажа, чьё досье хотите прочитать:',
+        message='Вы открыли папку с досье на каждого персонажа, кого Вы встречали или видели. '
+                'Введите имя или прозвище того, чьё досье хотите прочитать:',
         random_id=random.randint(0, 1000000),
         keyboard=base_keyboard.get_keyboard(),
     )
@@ -111,15 +112,19 @@ def call_secretary(user_id):
 
 actions = {'Доходы': send_income, 'Расходы': send_expenses, 'Казна': send_treasury, 'Счастье': send_happiness,
            'Миссии': send_wishes, 'Досье': send_dossier, 'Вызвать секретаря': call_secretary}
-for event in longpoll.listen():
-    if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.from_user:
-        if event.text in actions:
-            actions[event.text](event.user_id)
-        elif event.text == "Начать":
-            vk.messages.send(
-                user_id=event.user_id,
-                message='Добро пожаловать в Extraterrestrial:Reload! Интересной и приятной игры!',
-                random_id=random.randint(0, 1000000),
-                keyboard=base_keyboard.get_keyboard(),
-            )
-        # elif персонаж
+while True:
+    try:
+        for event in longpoll.listen():
+            if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.from_user:
+                if event.text in actions:
+                    actions[event.text](event.user_id)
+                elif event.text == "Начать":
+                    vk.messages.send(
+                        user_id=event.user_id,
+                        message='Добро пожаловать в Extraterrestrial:Reload! Интересной и приятной игры!',
+                        random_id=random.randint(0, 1000000),
+                        keyboard=base_keyboard.get_keyboard(),
+                    )
+                # elif персонаж
+    except Exception as e:
+        print(e)
