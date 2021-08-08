@@ -61,15 +61,8 @@ def send_expenses(user_id):
 def send_treasury(user_id):
     vk.messages.send(
         user_id=event.user_id,
-        message='Суммарный приток в казну Вашей страны за год:\n'
-                '\n'
-                'Составляющие дохода:\n'
-                'Государственные предприятия: (%)\n'
-                'НДФЛ: (%)\n'
-                'Налог на прибыль организаций: (%)\n'
-                'Акцизы: (%)\n'
-                'Налоги на имущество: (%)\n'
-                'Другие доходы: (%)\n',
+        message='Суммарный бюджет Вашей страны в данный момент эквивалентен\n\n'
+                'Тратьте его с осторожностью! Кто знает, какую психосвинью подкинет другой игрок...',
         random_id=random.randint(0, 1000000),
         keyboard=base_keyboard.get_keyboard(),
     )
@@ -78,32 +71,20 @@ def send_treasury(user_id):
 def send_happiness(user_id):
     vk.messages.send(
         user_id=event.user_id,
-        message='Суммарный приток в казну Вашей страны за год:\n'
+        message='Уровень личного счастья Вашего персонажа:\n'
                 '\n'
-                'Составляющие дохода:\n'
-                'Государственные предприятия: (%)\n'
-                'НДФЛ: (%)\n'
-                'Налог на прибыль организаций: (%)\n'
-                'Акцизы: (%)\n'
-                'Налоги на имущество: (%)\n'
-                'Другие доходы: (%)\n',
+                'Уровень счастья влияет на Вашу харизму, горячность речей и удачу. Каждый день уровень счастья'
+                ' снижается, для его увеличения нужно выполнять собственные желания.',
         random_id=random.randint(0, 1000000),
         keyboard=base_keyboard.get_keyboard(),
     )
 
 
-def send_missions(user_id):
+def send_wishes(user_id):
     vk.messages.send(
         user_id=event.user_id,
-        message='Суммарный приток в казну Вашей страны за год:\n'
-                '\n'
-                'Составляющие дохода:\n'
-                'Государственные предприятия: (%)\n'
-                'НДФЛ: (%)\n'
-                'Налог на прибыль организаций: (%)\n'
-                'Акцизы: (%)\n'
-                'Налоги на имущество: (%)\n'
-                'Другие доходы: (%)\n',
+        message='Желания Вашего персонажа:\n'
+                '\n',
         random_id=random.randint(0, 1000000),
         keyboard=base_keyboard.get_keyboard(),
     )
@@ -112,15 +93,7 @@ def send_missions(user_id):
 def send_dossier(user_id):
     vk.messages.send(
         user_id=event.user_id,
-        message='Суммарный приток в казну Вашей страны за год:\n'
-                '\n'
-                'Составляющие дохода:\n'
-                'Государственные предприятия: (%)\n'
-                'НДФЛ: (%)\n'
-                'Налог на прибыль организаций: (%)\n'
-                'Акцизы: (%)\n'
-                'Налоги на имущество: (%)\n'
-                'Другие доходы: (%)\n',
+        message='Вы открыли папку с досье. Введите имя или прозвище персонажа, чьё досье хотите прочитать:',
         random_id=random.randint(0, 1000000),
         keyboard=base_keyboard.get_keyboard(),
     )
@@ -130,13 +103,14 @@ def call_secretary(user_id):
     vk.messages.send(
         user_id=event.user_id,
         message=f'Секретарь:\n{random.choice(time_of_day)}, правитель! {random.choice(secretary_phrases)}',
+        # добавить правильное обращение. Направляющая и прочее
         random_id=random.randint(0, 1000000),
         keyboard=base_keyboard.get_keyboard(),
     )
 
 
 actions = {'Доходы': send_income, 'Расходы': send_expenses, 'Казна': send_treasury, 'Счастье': send_happiness,
-           'Миссии': send_missions, 'Досье': send_dossier, 'Вызвать секретаря': call_secretary}
+           'Миссии': send_wishes, 'Досье': send_dossier, 'Вызвать секретаря': call_secretary}
 for event in longpoll.listen():
     if event.type == VkEventType.MESSAGE_NEW and event.to_me and event.from_user:
         if event.text in actions:
@@ -148,3 +122,4 @@ for event in longpoll.listen():
                 random_id=random.randint(0, 1000000),
                 keyboard=base_keyboard.get_keyboard(),
             )
+        # elif персонаж
